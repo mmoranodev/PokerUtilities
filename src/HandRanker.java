@@ -1,6 +1,5 @@
 public class HandRanker {
-
-    public enum HandStrength{
+    public enum HandRank {
         HighCard(0),
         Pair(1),
         TwoPair(2),
@@ -12,8 +11,13 @@ public class HandRanker {
         StraightFlush(8),
         RoyalFlush(9);
         public final int value;
-        private HandStrength(int value) {
+        private HandRank(int value) {
             this.value = value;
         }
+    }
+
+    public HandRank rankHand(Card c1, Card c2, Card[] board)
+    {
+        return HandRank.Pair;
     }
 }

@@ -12,6 +12,7 @@ public class Deck {
         for(Card.Suit suit : Card.Suit.values()){
             for(Card.Rank rank : Card.Rank.values()){
                 deck[pos] = new Card(rank, suit);
+                pos++;
             }
         }
     }

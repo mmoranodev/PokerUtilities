@@ -3,7 +3,7 @@ public class Player {
     private int money, bet;
     private boolean isAllIn, hasFolded, inSidePot,isBankrupt;
     private String name;
-    private HandRanker.HandStrength handStrength;
+    private HandRanker.HandRank handRank;
 
     public Player(String name)
     {
@@ -32,6 +32,10 @@ public class Player {
         return builder.toString();
     }
 
+    public String showHandAndMoney()
+    {
+        return "Hand: " + showHand() + ", Money: " + money;
+    }
 
     public Card getCard1() {
         return card1;
@@ -105,11 +109,11 @@ public class Player {
         this.name = name;
     }
 
-    public HandRanker.HandStrength getHandStrength() {
-        return handStrength;
+    public HandRanker.HandRank getHandRank() {
+        return handRank;
     }
 
-    public void setHandStrength(HandRanker.HandStrength handStrength) {
-        this.handStrength = handStrength;
+    public void setHandRank(HandRanker.HandRank handRank) {
+        this.handRank = handRank;
     }
 }
