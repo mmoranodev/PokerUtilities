@@ -4,19 +4,6 @@ public class BoardSearcher {
         this.board = board;
     }
 
-//    public boolean pairPresent(){
-//        Card checkCard;
-//        int count = 1;
-//        for(int i = 1; i < 5; i++){
-//            for(int k = 1; k < 5; k++){
-//                checkCard = board[count - 1];
-//                if(checkCard.getValue() == board[k].getValue())
-//                    return true;
-//            }
-//            count++;
-//        }
-//        return false;
-//    }
     public boolean pairPresent(){
         Card checkCard;
         int cardPos;
@@ -29,22 +16,39 @@ public class BoardSearcher {
         }
         return false;
     }
-//    public boolean twoPairPresent() {
-//        Card checkCard;
-//        Card.Rank firstPair = null;
-//        int count = 1, pairCount = 0;
-//        for (int i = 1; i < 5; i++){
-//            for(int k = 1; k < 5; k++){
-//                checkCard = board[count - 1];
-//                if(checkCard.getValue() == board[k].getValue() &&
-//                board[k].getRank() != firstPair) {
-//                    pairCount++;
-//                    firstPair = board[k].getRank();
-//                }
-//                checkCard = board[k];
-//            }
-//            count++;
-//        }
-//        return pairCount == 2;
-//    }
+    public boolean twoPairPresent() {
+        Card checkCard;
+        Card.Rank firstPair = null;
+        int count = 1, pairCount = 0;
+        for (int i = 1; i < 5; i++){
+            for(int k = 1; k < 5; k++){
+                checkCard = board[count - 1];
+                if(!checkCard.equals(board[k]) && checkCard.getValue() == board[k].getValue() &&
+                        board[k].getRank() != firstPair) {
+                    pairCount++;
+                    firstPair = board[k].getRank();
+                }
+                if(pairCount == 2)
+                    return true;
+            }
+            count++;
+        }
+        return false;
+    }
+    public boolean threePairPresent(){
+        Card checkCard = board[0];
+        int cardCount = 1;
+        for(int i = 0; i < 5; i++){
+            for(int k = 0; k < 5; k++){
+                if(!checkCard.equals(board[i]) &&
+                        checkCard.getValue() == board[k].getValue())
+                    cardCount++;
+                if(cardCount == 3)
+                    return true;
+            }
+            cardCount = 0;
+            checkCard = board[i];
+        }
+        return false;
+    }
 }
