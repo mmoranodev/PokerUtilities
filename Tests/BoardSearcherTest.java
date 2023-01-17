@@ -140,4 +140,95 @@ class BoardSearcherTest {
             assertFalse(result);
         }
     }
+    @Test
+    void fourPairPresent_True(){
+        board = new Card[]{H2, C2, D2, S2, C6};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.fourPairPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.threePairPresent();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void fourPairPresent_False(){
+        board = new Card[]{H6, C2, D2, H2, C6};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.fourPairPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.threePairPresent();
+            }
+            assertFalse(result);
+        }
+    }
+
+    @Test
+    void straightPresent(){
+        board = new Card[]{H2, C3, D4, S5, C6};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.straightPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.straightPresent();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void straightPresent_False(){
+        board = new Card[]{H2, C3, D4, S5, C9};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.straightPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.straightPresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void straightPresent_5High(){
+        board = new Card[]{H2, C3, D4, S5, CA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.straightPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.straightPresent();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void straightPresent_5High_False(){
+        board = new Card[]{H2, C3, D4, S7, CA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.straightPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.straightPresent();
+            }
+            assertFalse(result);
+        }
+    }
 }

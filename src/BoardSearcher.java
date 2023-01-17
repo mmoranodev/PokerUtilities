@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class BoardSearcher {
     private Card[] board;
     public BoardSearcher(Card[] board){
@@ -50,5 +52,41 @@ public class BoardSearcher {
             checkCard = board[i];
         }
         return false;
+    }
+    public boolean fourPairPresent(){
+        Card checkCard = board[0];
+        int cardCount = 1;
+        for(int i = 0; i < 5; i++){
+            for(int k = 0; k < 5; k++){
+                if(!checkCard.equals(board[i]) &&
+                        checkCard.getValue() == board[k].getValue())
+                    cardCount++;
+                if(cardCount == 4)
+                    return true;
+            }
+            cardCount = 0;
+            checkCard = board[i];
+        }
+        return false;
+    }
+    public boolean straightPresent()
+    {
+        int[] values = new int[5];
+        for(int i = 0; i < 5; i++){
+            values[i] = board[i].getValue();
+        }
+        return isSequence(values);
+    }
+
+    private boolean isSequence(int[] values){
+        Arrays.sort(values);
+        for(int i = 0; i < 4; i++){
+            if(values[i + 1] != values[i] + 1){
+                if(i == 3 && values[0] == 1 && values[4] == 13)
+                    continue;
+                return false;
+            }
+        }
+        return true;
     }
 }
