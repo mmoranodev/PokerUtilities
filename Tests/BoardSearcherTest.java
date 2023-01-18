@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BoardSearcherTest {
     private static Deck deck;
-    private static Card temp;
     private static Card board[];
     private static Card C2, C3, C4, C5, C6, C7, C8, C9, C10, CJ, CQ, CK, CA;
     private static Card S2, S3, S4, S5, S6, S7, S8, S9, S10, SJ, SQ, SK, SA;
@@ -22,7 +21,6 @@ class BoardSearcherTest {
     private static Scanner sc;
     @BeforeAll
     static void init(){
-        temp = new Card();
         deck = new Deck();
         //deal cards
         C2 = deck.deal(); C3 = deck.deal(); C4 = deck.deal(); C5 = deck.deal(); C6 = deck.deal(); C7 = deck.deal();

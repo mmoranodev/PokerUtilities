@@ -18,6 +18,17 @@ public class BoardSearcher {
         }
         return false;
     }
+    public Card getBoardPair(){
+        Card checkCard;
+        for(int i = 0; i < 5; i++){
+            checkCard = board[i];
+            for(int k = 0; k < 5; k++){
+                if(!checkCard.equals(board[k]) && checkCard.getValue() == board[k].getValue())
+                    return checkCard;
+            }
+        }
+        return null;
+    }
     public boolean twoPairPresent() {
         Card checkCard;
         Card.Rank firstPair = null;
