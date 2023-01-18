@@ -2,13 +2,13 @@ import java.util.Arrays;
 
 public class BoardSearcher {
     private Card[] board;
+    private boolean aceHigh;
     public BoardSearcher(Card[] board){
         this.board = board;
     }
 
     public boolean pairPresent(){
         Card checkCard;
-        int cardPos;
         for(int i = 0; i < 5; i++){
             checkCard = board[i];
             for(int k = 0; k < 5; k++){
@@ -77,6 +77,43 @@ public class BoardSearcher {
         }
         return isSequence(values);
     }
+    public boolean flushPresent(){
+        Card checkCard = board[0];
+        for(Card card : board){
+            if(!checkCard.getSuit().equals(card.getSuit()))
+                return false;
+        }
+        return true;
+    }
+    public boolean fullHousePresent(){
+        int count1 = 1, count2 = 1;
+        Card card1 = null, card2 = null, checkCard;
+        for(int i = 0; i < 5; i++){
+            checkCard = board[i];
+            if((card1 != null && checkCard.equals(card1)) ||
+                    (card2 != null && checkCard.equals(card2)))
+                continue;
+            for(int k = 0; k < 5; k++){
+                if(!checkCard.equals(board[k]) && checkCard.getValue() == board[k].getValue()){
+                    if(card1 == null) {
+                        count1++;
+                        card1 = checkCard;
+                    }
+                    else{
+                        count2++;
+                        card2 = checkCard;
+                    }
+                }
+            }
+        }
+        return count1 + count2 == 5;
+    }
+    public boolean royalFlushPresent(){
+        return straightPresent() && aceHigh && flushPresent();
+    }
+    public boolean straightFlushPresent(){
+        return straightPresent() && flushPresent();
+    }
 
     private boolean isSequence(int[] values){
         Arrays.sort(values);
@@ -87,6 +124,8 @@ public class BoardSearcher {
                 return false;
             }
         }
+        if(values[4] == 13 && values[3] == 12)
+            aceHigh = true;
         return true;
     }
 }

@@ -231,4 +231,230 @@ class BoardSearcherTest {
             assertFalse(result);
         }
     }
+
+    @Test
+    void flushPresent(){
+        board = new Card[]{H2, H3, H4, H7, HA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.flushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.flushPresent();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void flushPresent_False(){
+        board = new Card[]{H2, D3, H4, H7, HA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.flushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.flushPresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void fullHousePresent(){
+        board = new Card[]{H5, D5, H5, H7, H7};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.fullHousePresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.fullHousePresent();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void fullHousePresent_False_TwoPair(){
+        board = new Card[]{H5, D6, H5, H7, H7};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.fullHousePresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.fullHousePresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void fullHousePresent_False_ThreePair(){
+        board = new Card[]{H5, D6, H7, H7, H7};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.fullHousePresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.fullHousePresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void fullHousePresent_False_FourPair(){
+        board = new Card[]{H5, D7, H7, H7, H7};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.fullHousePresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.fullHousePresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void straightFlushPresesnt(){
+        board = new Card[]{H5, H6, H7, H8, H9};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.straightFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.straightFlushPresent();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void straightFlushPresesnt_5High(){
+        board = new Card[]{H5, H4, H3, H2, HA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.straightFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.straightFlushPresent();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void straightFlushPresesnt_False_Straight(){
+        board = new Card[]{H5, H4, H3, D2, HA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.straightFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.straightFlushPresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void straightFlushPresesnt_False_Flush(){
+        board = new Card[]{H5, H4, H6, H2, HA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.straightFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.straightFlushPresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void royalFlushPresent(){
+        board = new Card[]{H10, HJ, HQ, HK, HA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.royalFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.royalFlushPresent();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void royalFlushPresent_False_Straight(){
+        board = new Card[]{H10, DJ, HQ, HK, HA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.royalFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.royalFlushPresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void royalFlushPresent_False_Flush(){
+        board = new Card[]{H10, H9, HQ, HK, HA};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.royalFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.royalFlushPresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void royalFlushPresent_False_NotAceHigh(){
+        board = new Card[]{H10, H9, HQ, HK, HJ};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.royalFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.royalFlushPresent();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void royalFlushPresent_False_5High(){
+        board = new Card[]{H2, H3, H4, HA, H5};
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            searcher = new BoardSearcher(permutation);
+            result = result && searcher.royalFlushPresent();
+            if(!result) {
+                System.out.println(result);
+                searcher.royalFlushPresent();
+            }
+            assertFalse(result);
+        }
+    }
 }
