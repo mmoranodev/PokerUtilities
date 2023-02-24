@@ -1,7 +1,7 @@
 public class Player {
     private Card card1, card2;
     private int money, bet;
-    private boolean isAllIn, hasFolded, inSidePot,isBankrupt;
+    private boolean isAllIn, isFolded, inSidePot,isBankrupt;
     private String name;
     private HandRanker.HandRank handRank;
 
@@ -14,6 +14,7 @@ public class Player {
     {
         card1 = c1;
         card2 = c2;
+        sortHand();
     }
 
     public void sortHand(){
@@ -77,12 +78,12 @@ public class Player {
         isAllIn = allIn;
     }
 
-    public boolean isHasFolded() {
-        return hasFolded;
+    public boolean isFolded() {
+        return isFolded;
     }
 
-    public void setHasFolded(boolean hasFolded) {
-        this.hasFolded = hasFolded;
+    public void setFolded(boolean folded) {
+        this.isFolded = folded;
     }
 
     public boolean isInSidePot() {

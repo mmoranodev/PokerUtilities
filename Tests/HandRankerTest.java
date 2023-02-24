@@ -139,5 +139,495 @@ class HandRankerTest {
 
     @Test
     void hasTwoPair() {
+        board = new Card[]{H3, H5, C9, S10, DK};
+        card1 = D3;
+        card2 = D5;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasTwoPair_False() {
+        board = new Card[]{H3, H5, C9, S10, DK};
+        card1 = D5;
+        card2 = D5;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasTwoPair_OneBoard_C2() {
+        board = new Card[]{H3, D3, C5, S10, DK};
+        card1 = D7;
+        card2 = D5;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasTwoPair_OneBoard_C1() {
+        board = new Card[]{H3, D3, C5, S10, DK};
+        card1 = D5;
+        card2 = D7;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasTwoPair_OneBoard_False() {
+        board = new Card[]{H3, D3, C9, S10, DK};
+        card1 = D7;
+        card2 = D5;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasTwoPair_Pocket() {
+        board = new Card[]{H3, C3, C9, S10, DK};
+        card1 = D5;
+        card2 = S5;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasTwoPair_Pocket_False() {
+        board = new Card[]{H3, C4, C9, S10, DK};
+        card1 = D5;
+        card2 = S5;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasTwoPair_TwoBoard() {
+        board = new Card[]{H5, D5, C3, S3, DK};
+        card1 = D8;
+        card2 = D4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasTwoPair_TwoBoard_False() {
+        board = new Card[]{H5, D5, C2, S3, DK};
+        card1 = D8;
+        card2 = D4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasTwoPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasTwoPair();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasThreePair_Board(){
+        board = new Card[]{H8, D8, C9, S8, DK};
+        card1 = D9;
+        card2 = SK;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasThreePair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasThreePair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasThreePair_Pocket(){
+        board = new Card[]{H8, D5, C9, S3, DK};
+        card1 = D8;
+        card2 = S8;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasThreePair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasThreePair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasThreePair_C1(){
+        board = new Card[]{H8, D5, C8, S3, DK};
+        card1 = D8;
+        card2 = D4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasThreePair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasThreePair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasThreePair_C1_False(){
+        board = new Card[]{H8, D5, C7, S3, DK};
+        card1 = D8;
+        card2 = D4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasThreePair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasThreePair();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasThreePair_C2(){
+        board = new Card[]{H8, D5, C8, S3, DK};
+        card2 = D8;
+        card1 = D4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasThreePair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasThreePair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFourPair_Board(){
+        board = new Card[]{H8, D8, C8, S8, DK};
+        card1 = D9;
+        card2 = SK;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFourPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFourPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFourPair_Pocket(){
+        board = new Card[]{H8, D5, C8, S3, DK};
+        card1 = D8;
+        card2 = S8;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFourPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFourPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFourPair_C1(){
+        board = new Card[]{H8, D5, C8, S8, DK};
+        card1 = D8;
+        card2 = D4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFourPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFourPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFourPair_C1_False(){
+        board = new Card[]{H8, D5, C7, S8, DK};
+        card1 = D8;
+        card2 = D4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFourPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFourPair();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasFourPair_C2(){
+        board = new Card[]{H8, D5, C8, S8, DK};
+        card2 = D8;
+        card1 = D4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFourPair();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFourPair();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraight(){
+        board = new Card[]{H8, D5, C6, SQ, DK};
+        card1 = S4;
+        card2 = S7;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraight();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraight();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraight_False(){
+        board = new Card[]{H9, D5, C6, SQ, DK};
+        card1 = S4;
+        card2 = S7;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraight();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraight();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasStraight_AceHigh(){
+        board = new Card[]{H8, D5, CA, SQ, DK};
+        card1 = S10;
+        card2 = SJ;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraight();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraight();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraight_FiveHigh(){
+        board = new Card[]{H3, D5, C7, S4, DK};
+        card1 = S2;
+        card2 = SA;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraight();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraight();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraight_OneCard(){
+        board = new Card[]{H8, D5, C6, S7, DK};
+        card1 = S4;
+        card2 = S10;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraight();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraight();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFlush(){
+        board = new Card[]{S8, S5, S6, S7, DK};
+        card1 = S4;
+        card2 = S10;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFlush_Board(){
+        board = new Card[]{S8, S5, S6, S7, SK};
+        card1 = H4;
+        card2 = H10;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFlush_C1(){
+        board = new Card[]{S8, S5, S6, S7, DK};
+        card1 = S4;
+        card2 = D10;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFlush_C2(){
+        board = new Card[]{S8, S5, S6, S7, DK};
+        card1 = D4;
+        card2 = S10;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFlush_False(){
+        board = new Card[]{S8, S5, S6, D7, DK};
+        card1 = D4;
+        card2 = S10;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFlush();
+            }
+            assertFalse(result);
+        }
     }
 }
