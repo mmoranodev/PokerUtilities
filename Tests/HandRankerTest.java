@@ -630,4 +630,295 @@ class HandRankerTest {
             assertFalse(result);
         }
     }
+
+    @Test
+    void hasFullHouse(){
+        board = new Card[]{S8, D8, S6, D7, DK};
+        card1 = S7;
+        card2 = C8;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFullHouse();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFullHouse();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFullHouse_False(){
+        board = new Card[]{S8, D6, S6, D7, DK};
+        card1 = S7;
+        card2 = C8;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFullHouse();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFullHouse();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasFullHouse_OneCard(){
+        board = new Card[]{S8, D6, S6, D6, DK};
+        card1 = S7;
+        card2 = C8;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFullHouse();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFullHouse();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFullHouse_OneCard_False(){
+        board = new Card[]{S8, D6, S6, C6, DK};
+        card1 = S7;
+        card2 = C9;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFullHouse();
+            if(result){
+                System.out.println(result);
+                ranker.hasFullHouse();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasFullHouse_PocketPair(){
+        board = new Card[]{S8, D6, S6, C6, DK};
+        card1 = S7;
+        card2 = C7;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFullHouse();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFullHouse();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFullHouse_PocketPair_False(){
+        board = new Card[]{S8, D6, S9, C6, DK};
+        card1 = S7;
+        card2 = C7;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFullHouse();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFullHouse();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasFullHouse_BoardPair(){
+        board = new Card[]{S8, D6, S9, C6, DK};
+        card1 = S6;
+        card2 = C8;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFullHouse();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFullHouse();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasFullHouse_Board2Pair(){
+        board = new Card[]{S8, D6, D8, C6, DK};
+        card1 = S10;
+        card2 = C8;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasFullHouse();
+            if(!result){
+                System.out.println(result);
+                ranker.hasFullHouse();
+            }
+            assertTrue(result);
+        }
+    }
+
+    @Test
+    void hasStraightFlush(){
+        board = new Card[]{S8, S6, S7, C6, DK};
+        card1 = S10;
+        card2 = S9;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraightFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraightFlush_False(){
+        board = new Card[]{S8, S6, SJ, C6, DK};
+        card1 = S10;
+        card2 = S9;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraightFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasStraightFlush_OneCard(){
+        board = new Card[]{S8, S6, S10, S7, DK};
+        card1 = S2;
+        card2 = S9;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraightFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraightFlush_OneCard_False(){
+        board = new Card[]{S8, S6, S10, S7, DK};
+        card1 = S2;
+        card2 = SQ;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraightFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasStraightFlush_TwoCard(){
+        board = new Card[]{S8, S6, S10, C4, DK};
+        card1 = S7;
+        card2 = S9;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraightFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraightFlush_WrongFlush(){
+        board = new Card[]{S8, C6, S10, C4, SK};
+        card1 = S7;
+        card2 = S9;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraightFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertFalse(result);
+        }
+    }
+    @Test
+    void hasStraightFlush_5Board(){
+        board = new Card[]{S8, S6, S5, S4, S7};
+        card1 = C7;
+        card2 = C9;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraightFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraightFlush_5High(){
+        board = new Card[]{S3, S5, S2, C4, DK};
+        card1 = SA;
+        card2 = S4;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.hasStraightFlush();
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void hasStraightFlush_AceHigh(){
+        board = new Card[]{S10, SQ, SK, C4, DK};
+        card1 = SA;
+        card2 = SJ;
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            ranker = new HandRanker(permutation, card1, card2);
+            result = result && ranker.rankHand().equals(HandRanker.HandRank.RoyalFlush);
+            if(!result){
+                System.out.println(result);
+                ranker.hasStraightFlush();
+            }
+            assertTrue(result);
+        }
+    }
 }

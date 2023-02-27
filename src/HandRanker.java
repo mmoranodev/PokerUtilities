@@ -1,9 +1,10 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class HandRanker {
     private Card[] board;
     private Card card1, card2;
     private BoardSearcher boardSearcher;
+    private boolean isAceHigh;
     public HandRanker(Card[] board, Card card1, Card card2){
         this.board = board;
         this.card1 = card1;
@@ -27,9 +28,25 @@ public class HandRanker {
         }
     }
 
-    public HandRank rankHand(Card c1, Card c2, Card[] board)
+    public HandRank rankHand()
     {
-        return HandRank.Pair;
+        if(hasStraightFlush())
+            return isAceHigh ? HandRank.RoyalFlush : HandRank.StraightFlush;
+        if(hasFourPair())
+            return HandRank.FourPair;
+        if(hasFullHouse())
+            return HandRank.FullHouse;
+        if(hasFlush())
+            return HandRank.Flush;
+        if(hasStraight())
+            return HandRank.Straight;
+        if(hasThreePair())
+            return HandRank.ThreePair;
+        if(hasTwoPair())
+            return HandRank.TwoPair;
+        if(hasPair())
+            return HandRank.Pair;
+        return HandRank.HighCard;
     }
 
     public boolean hasPair(){
@@ -179,10 +196,24 @@ public class HandRanker {
         if(hasPocketPair()) {
             if (boardSearcher.threePairPresent())
                 return true;
-        }
+            //if pocket pair and board pair present, return true if three of a kind with pocket pair
+            else if(boardSearcher.pairPresent()){
+                for(int i = 0; i < 5; i++)
+                    if(card1.getValue() == board[i].getValue())
+                        return true;
+            }
+        }//if three of kind present in board, find pair from hand
         else if(boardSearcher.threePairPresent()){
             for(int i = 0; i < 5; i++){
                 if(card1.getValue() == board[i].getValue())
+                    return true;
+                if(card2.getValue() == board[i].getValue())
+                    return true;
+            }
+        }
+        else if(boardSearcher.twoPairPresent()){
+            for(int i = 0; i < 5; i++) {
+                if (card1.getValue() == board[i].getValue())
                     return true;
                 if(card2.getValue() == board[i].getValue())
                     return true;
@@ -200,6 +231,110 @@ public class HandRanker {
             }
         }
         return false;
+    }
+    public boolean hasStraightFlush(){
+        if(boardSearcher.straightFlushPresent())
+            return true;
+        ArrayList<Card> allCards = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            allCards.add(board[i]);
+        }
+        allCards.add(card1);
+        allCards.add(card2);
+        Collections.sort(allCards, (c1, c2) -> {return Integer.compare(c1.getValue(), c2.getValue());});
+        ArrayList<Card> straightCards = getStraightCards(allCards);
+        if(straightCards.size() >= 5) {
+            return hasCorrectFlush(straightCards);
+        }
+        return false;
+    }
+
+    private boolean hasCorrectFlush(ArrayList<Card> cards){
+        if(cards.size() == 5){
+            Card.Suit suit = cards.get(0).getSuit();
+            for(Card card : cards)
+                if(!card.getSuit().equals(suit))
+                    return false;
+        }
+        else{
+            int count, aceCount, currentValue = cards.get(0).getValue();
+            Card.Suit suit;
+            Card card;
+            //go through the list to see if there is a straight flush
+            for(int i = 0; i < cards.size(); i++){
+                count = 1;
+                aceCount = 0;
+                suit = cards.get(i).getSuit();
+                for(int k = 0; k < cards.size(); k++){
+                    card = cards.get(k);
+                    if(card.getRank() == Card.Rank.Ace)
+                        aceCount++;
+                    //check if comparing same card
+                    if(!cards.get(i).equals(cards.get(k))){
+                        //if card is the same suit and sequential, count++
+                        if(card.getSuit() == suit && currentValue == card.getValue() - 1) {
+                            count++;
+                            currentValue = card.getValue();
+                        }
+                        else if(card.getRank() == Card.Rank.Ace && cards.get(k - aceCount).getRank() == Card.Rank.Five && card.getSuit() == suit)
+                            count++;
+                        //if cards have same value continue
+                        else if(currentValue == card.getValue())
+                            continue;
+                        //if current card and next card have same value but first is incorrect suit, check next card
+                        else if(k < cards.size() - 1 && currentValue + 1 == cards.get(k + 1).getValue())
+                            continue;
+                        else//next card is not same suit, break and check next
+                            break;
+                    }
+                    if(count == 5)//straight flush found
+                    {//determine if royal flush
+                        if(cards.get(cards.size() - 1).getRank() == Card.Rank.Ace)
+                            for(int j = cards.size() - 1; j > 0; j--)
+                                if(cards.get(j).getRank() == Card.Rank.King)
+                                    isAceHigh = true;
+                        return true;
+                    }
+                }
+                if(count == 5)//straight flush found
+                {//determine if royal flush
+                    if(cards.get(cards.size() - 1).getRank() == Card.Rank.Ace)
+                        for(int j = cards.size() - 1; j < 0; j--)
+                            if(cards.get(j).getRank() == Card.Rank.King)
+                                isAceHigh = true;
+                    return true;
+                }
+            }//straight flush not found
+            return false;
+        }
+        return true;
+    }
+    private ArrayList<Card> getStraightCards(ArrayList<Card> allCards){
+        ArrayList<Card> result = new ArrayList<>();
+        int low = allCards.get(0).getValue(), high = low, pos = 0;
+        int currentValue = allCards.get(0).getValue();
+        Card currentCard;
+        for(Card card : allCards){
+            currentCard = allCards.get(pos);
+            if(currentValue == currentCard.getValue() - 1 || currentValue == currentCard.getValue()){
+                result.add(card);
+                currentValue = currentCard.getValue();
+                high = currentValue;
+            }
+            else if(low == Card.Rank.Two.value && high == Card.Rank.Five.value && allCards.get(6).getRank() == Card.Rank.Ace)
+                result.add(allCards.get(6));
+            else if(result.size() >=5)
+                continue;
+            else{
+                result.clear();
+                result.add(currentCard);
+                currentValue = currentCard.getValue();
+                low = currentValue;
+                high = currentValue;
+            }
+            pos++;
+        }
+        return result;
     }
 
     private boolean hasPocketPair(){
