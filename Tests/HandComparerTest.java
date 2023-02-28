@@ -239,5 +239,125 @@ class HandComparerTest {
             assertTrue(result);
         }
     }
+    @Test
+    void compareThreePair_P1(){
+        board = new Card[]{H2, CK, C3, C4, CK};
+        p1.setCard1(CK);
+        p1.setCard2(CQ);
+        p2.setCard1(C5);
+        p2.setCard2(CK);
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            table.setBoard(permutation);
+            comparer = new HandComparer(table);
+            result = result && comparer.compareThreePair(p1, p2) == 1;
+            if(!result) {
+                System.out.println(result);
+                comparer.compareThreePair(p1, p2);
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void compareThreePair_P2(){
+        board = new Card[]{H2, C4, C3, CK, CK};
+        p1.setCard1(CK);
+        p1.setCard2(C5);
+        p2.setCard1(CQ);
+        p2.setCard2(CK);
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            table.setBoard(permutation);
+            comparer = new HandComparer(table);
+            result = result && comparer.compareThreePair(p1, p2) == 2;
+            if(!result) {
+                System.out.println(result);
+                comparer.compareThreePair(p1, p2);
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void compareThreePair_Tie(){
+        board = new Card[]{H10, CJ, C3, CK, CK};
+        p1.setCard1(CK);
+        p1.setCard2(C5);
+        p2.setCard1(C9);
+        p2.setCard2(CK);
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            table.setBoard(permutation);
+            comparer = new HandComparer(table);
+            result = result && comparer.compareThreePair(p1, p2) == 0;
+            if(!result) {
+                System.out.println(result);
+                comparer.compareThreePair(p1, p2);
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void comparePair_P1(){
+        board = new Card[]{H2, C10, C3, CJ, CK};
+        p1.setCard1(CK);
+        p1.setCard2(CQ);
+        p2.setCard1(C4);
+        p2.setCard2(CK);
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            table.setBoard(permutation);
+            comparer = new HandComparer(table);
+            result = result && comparer.comparePair(p1, p2) == 1;
+            if(!result) {
+                System.out.println(result);
+                comparer.comparePair(p1, p2);
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void comparePair_P2(){
+        board = new Card[]{H2, C10, C3, CJ, CK};
+        p1.setCard1(CK);
+        p1.setCard2(C5);
+        p2.setCard1(CQ);
+        p2.setCard2(CK);
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            table.setBoard(permutation);
+            comparer = new HandComparer(table);
+            result = result && comparer.comparePair(p1, p2) == 2;
+            if(!result) {
+                System.out.println(result);
+                comparer.comparePair(p1, p2);
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void comparePair_Tie(){
+        board = new Card[]{H9, C10, C3, CJ, CK};
+        p1.setCard1(CK);
+        p1.setCard2(C5);
+        p2.setCard1(C5);
+        p2.setCard2(CK);
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            table.setBoard(permutation);
+            comparer = new HandComparer(table);
+            result = result && comparer.comparePair(p1, p2) == 0;
+            if(!result) {
+                System.out.println(result);
+                comparer.comparePair(p1, p2);
+            }
+            assertTrue(result);
+        }
+    }
 
 }

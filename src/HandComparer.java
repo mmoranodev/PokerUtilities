@@ -66,11 +66,33 @@ public class HandComparer {
         else
             return 0;
     }
+    public int compareThreePair(Player p1, Player p2){
+        int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.ThreePair);
+        int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.ThreePair);
+        for(int i = 4; i >= 3; i--) {
+            if (p1Cards[i] > p2Cards[i])
+                return 1;
+            else if (p1Cards[i] < p2Cards[i])
+                return 2;
+        }
+        return 0;
+    }
+    public int comparePair(Player p1, Player p2){
+        int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.Pair);
+        int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.Pair);
+        for(int i = 4; i >= 2; i--) {
+            if (p1Cards[i] > p2Cards[i])
+                return 1;
+            else if (p1Cards[i] < p2Cards[i])
+                return 2;
+        }
+        return 0;
+    }
 
     //Gets best 5 cards based upon hand rank
     private int[] getTopCards(Card c1, Card c2, HandRanker.HandRank rank){
-        int[] result = null;
-        int[] cardValues = new int[7];
+        int[] result = null, cardValues = new int[7];
+        int pairValue;
         for(int i = 0; i < 5; i++)
             cardValues[i] = board[i].getValue();
         cardValues[5] = c1.getValue();
@@ -94,7 +116,7 @@ public class HandComparer {
                 result = Arrays.copyOfRange(straightValues.stream().mapToInt(x -> x).toArray(), straightValues.size() - 5, straightValues.size());
                 break;
             case FourPair:
-                int pairValue = findPairedValue(cardValues, 4);
+                pairValue = findPairedValue(cardValues, 4);
                 cardValues = Arrays.stream(cardValues).filter(x -> x != pairValue).toArray();
                 result = new int[] {pairValue, pairValue, pairValue, pairValue, cardValues[cardValues.length - 1]};
                 break;
@@ -105,19 +127,25 @@ public class HandComparer {
 
                 break;
             case ThreePair:
-
+                pairValue = findPairedValue(cardValues, 3);
+                cardValues = Arrays.stream(cardValues).filter(x -> x != pairValue).toArray();
+                result = new int[] {pairValue, pairValue, pairValue, cardValues[cardValues.length - 2], cardValues[cardValues.length - 1]};
                 break;
             case TwoPair:
 
                 break;
             case Pair:
-
+                pairValue = findPairedValue(cardValues, 2);
+                cardValues = Arrays.stream(cardValues).filter(x -> x != pairValue).toArray();
+                result = new int[] {pairValue, pairValue, cardValues[cardValues.length - 3], cardValues[cardValues.length - 2], cardValues[cardValues.length - 1]};
                 break;
             default: 
                 result = Arrays.copyOfRange(cardValues, 2, 7);
         }
         return result;
     }
+    //finds paired value in array of card values
+    //num param 2, 3, 4 based on pair, three/four of kind
     private int findPairedValue(int[] values, int num){
         int result = 0, count = 1;
         for(int i = 0; i < values.length; i++){
@@ -135,6 +163,7 @@ public class HandComparer {
         }
         return result;
     }
+
     private ArrayList<Integer> getStraightCards(int[] allCards){
         ArrayList<Integer> result = new ArrayList<>();
         int low = allCards[0], high = low, pos = 0;
