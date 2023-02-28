@@ -5,6 +5,10 @@ public class HandRanker {
     private Card card1, card2;
     private BoardSearcher boardSearcher;
     private boolean isAceHigh;
+    public void setCards(Card c1, Card c2){
+        card1 = c1;
+        card2 = c2;
+    }
     public HandRanker(Card[] board, Card card1, Card card2){
         this.board = board;
         this.card1 = card1;
