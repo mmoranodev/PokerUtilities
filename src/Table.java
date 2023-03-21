@@ -5,6 +5,13 @@ public class Table {
     private int pot;
     private ArrayList<Player> players;
     private ArrayList<SidePot> sidePots;
+    public Table(){}
+    public Table(Card[] board, int pot, ArrayList<Player> players, ArrayList<SidePot> sidePots){
+        this.board = board;
+        this.pot = pot;
+        this.players = players;
+        this.sidePots = sidePots;
+    }
 
     public Card[] getBoard() {
         return board;
