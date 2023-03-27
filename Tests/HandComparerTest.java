@@ -17,7 +17,7 @@ class HandComparerTest {
     private static Card D2, D3, D4, D5, D6, D7, D8, D9, D10, DJ, DQ, DK, DA;
     private static Card H2, H3, H4, H5, H6, H7, H8, H9, H10, HJ, HQ, HK, HA;
     private static Card card1, card2;
-    private static Player p1, p2;
+    private static Player p1, p2, p3;
     private static Table table;
     private static ArrayList<Player> players;
     private static HandComparer comparer;
@@ -37,9 +37,13 @@ class HandComparerTest {
         D8 = deck.deal(); D9 = deck.deal(); D10 = deck.deal(); DJ = deck.deal(); DQ = deck.deal(); DK = deck.deal(); DA = deck.deal();
         permutations = new ArrayList<>();
         board = new Card[5];
-        p1 = new Player("");
-        p2 = new Player("");
-        players = new ArrayList<>(List.of(p1, p2));
+        p1 = new Player("P1");
+        p2 = new Player("P2");
+        p3 = new Player("P3");
+        p1.setMoney(100);
+        p2.setMoney(100);
+        p3.setMoney(100);
+        players = new ArrayList<>(List.of(p1, p2, p3));
         table = new Table(board, 0, players, null);
         try {
             sc = new Scanner(new File("Permutations.txt"));
@@ -59,6 +63,9 @@ class HandComparerTest {
             permutations.add(new Card[]{board[nums[0]-1],board[nums[1]-1],board[nums[2]-1],board[nums[3]-1],board[nums[4]-1]});
         }
     }
+    //methods used in commented out tests made private
+    //region CompareHand Tests
+    /*
     @Test
     void compareHighCard_P1(){
         board = new Card[]{H3, C9, C10, CJ, CA};
@@ -172,6 +179,26 @@ class HandComparerTest {
             table.setBoard(permutation);
             comparer = new HandComparer(table);
             result = result && comparer.compareStraight(p1, p2) == 0;
+            if(!result) {
+                System.out.println(result);
+                comparer.compareStraight(p1, p2);
+            }
+            assertTrue(result);
+        }
+    }
+    @Test
+    void compareStraight_AceHigh_P1(){
+        board = new Card[]{H10, C2, C3, CK, CA};
+        p1.setCard1(C5);
+        p1.setCard2(C4);
+        p2.setCard1(CQ);
+        p2.setCard2(CJ);
+        getPermutations(board);
+        boolean result = true;
+        for(Card[] permutation : permutations){
+            table.setBoard(permutation);
+            comparer = new HandComparer(table);
+            result = result && comparer.compareStraight(p1, p2) == 2;
             if(!result) {
                 System.out.println(result);
                 comparer.compareStraight(p1, p2);
@@ -579,4 +606,202 @@ class HandComparerTest {
             assertTrue(result);
         }
     }
+*/
+
+    //endregion
+    @Test
+    void findWinner_P1(){
+        board = new Card[]{H4, C9, C3, C2, CA};
+        p1.setCard1(C5);
+        p1.setCard2(C6);
+        p2.setCard1(C9);
+        p2.setCard2(C4);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p1.setHandRank(HandRanker.HandRank.Straight);
+        p2.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 1);
+        assertTrue(result.get(0).getName().equals("P1"));
+        assertTrue(result.get(0).getMoney() == 110);
+    }
+    @Test
+    void findWinner_P2(){
+        board = new Card[]{H4, C9, C3, C2, CA};
+        p2.setCard1(C5);
+        p2.setCard2(C6);
+        p1.setCard1(C9);
+        p1.setCard2(C4);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p2.setHandRank(HandRanker.HandRank.Straight);
+        p1.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 1);
+        assertTrue(result.get(0).getName().equals("P2"));
+        assertTrue(result.get(0).getMoney() == 110);
+    }
+    @Test
+    void findWinner_Tie(){
+        board = new Card[]{H4, C9, C3, C2, CA};
+        p2.setCard1(C5);
+        p2.setCard2(C6);
+        p1.setCard1(C6);
+        p1.setCard2(C5);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p2.setHandRank(HandRanker.HandRank.Straight);
+        p1.setHandRank(HandRanker.HandRank.Straight);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 2);
+        assertTrue(result.get(0).getMoney() == 105);
+        assertTrue(result.get(1).getMoney() == 105);
+    }
+    @Test
+    void findWinner_3Player_P1(){
+        board = new Card[]{H2, C4, D6, S8, DJ};
+        p1.setHand(C6, S8);
+        p2.setHand(C2, S8);
+        p3.setHand(C4, S8);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p1.setHandRank(HandRanker.HandRank.TwoPair);
+        p2.setHandRank(HandRanker.HandRank.TwoPair);
+        p3.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 1);
+        assertTrue(result.get(0).getName().equals("P1"));
+        assertTrue(result.get(0).getMoney() == 110);
+    }
+    @Test
+    void findWinner_3Player_P2(){
+        board = new Card[]{H2, C4, D6, S8, DJ};
+        p2.setHand(C6, S8);
+        p1.setHand(C2, S8);
+        p3.setHand(C4, S8);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p1.setHandRank(HandRanker.HandRank.TwoPair);
+        p2.setHandRank(HandRanker.HandRank.TwoPair);
+        p3.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 1);
+        assertTrue(result.get(0).getName().equals("P2"));
+        assertTrue(result.get(0).getMoney() == 110);
+    }
+    @Test
+    void findWinner_3Player_P3(){
+        board = new Card[]{H2, C4, D6, S8, DJ};
+        p3.setHand(C6, S8);
+        p1.setHand(C2, S8);
+        p2.setHand(C4, S8);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p1.setHandRank(HandRanker.HandRank.TwoPair);
+        p2.setHandRank(HandRanker.HandRank.TwoPair);
+        p3.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 1);
+        assertTrue(result.get(0).getName().equals("P3"));
+        assertTrue(result.get(0).getMoney() == 110);
+    }
+    @Test
+    void findWinner_3Player_P1P2_Tie(){
+        board = new Card[]{H2, C4, D6, S8, DJ};
+        p1.setHand(C6, S8);
+        p2.setHand(C6, S8);
+        p3.setHand(C4, S8);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p1.setHandRank(HandRanker.HandRank.TwoPair);
+        p2.setHandRank(HandRanker.HandRank.TwoPair);
+        p3.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 2);
+        ArrayList<String> names = new ArrayList<>(List.of(result.get(0).getName(), result.get(1).getName()));
+        assertTrue(names.contains("P1"));
+        assertTrue(names.contains("P2"));
+        assertTrue(result.get(0).getMoney() == 105);
+        assertTrue(result.get(1).getMoney() == 105);
+    }
+    @Test
+    void findWinner_3Player_P1P3_Tie(){
+        board = new Card[]{H2, C4, D6, S8, DJ};
+        p1.setHand(C6, S8);
+        p3.setHand(C6, S8);
+        p2.setHand(C4, S8);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p1.setHandRank(HandRanker.HandRank.TwoPair);
+        p2.setHandRank(HandRanker.HandRank.TwoPair);
+        p3.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 2);
+        ArrayList<String> names = new ArrayList<>(List.of(result.get(0).getName(), result.get(1).getName()));
+        assertTrue(names.contains("P1"));
+        assertTrue(names.contains("P3"));
+        assertTrue(result.get(0).getMoney() == 105);
+        assertTrue(result.get(1).getMoney() == 105);
+    }
+    @Test
+    void findWinner_3Player_P2P3_Tie(){
+        board = new Card[]{H2, C4, D6, S8, DJ};
+        p2.setHand(C6, S8);
+        p3.setHand(C6, S8);
+        p1.setHand(C4, S8);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p1.setHandRank(HandRanker.HandRank.TwoPair);
+        p2.setHandRank(HandRanker.HandRank.TwoPair);
+        p3.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 2);
+        ArrayList<String> names = new ArrayList<>(List.of(result.get(0).getName(), result.get(1).getName()));
+        assertTrue(names.contains("P2"));
+        assertTrue(names.contains("P3"));
+        assertTrue(result.get(0).getMoney() == 105);
+        assertTrue(result.get(1).getMoney() == 105);
+    }
+    @Test
+    void findWinner_3Player_Tie(){
+        board = new Card[]{H2, C4, D6, S8, DJ};
+        p2.setHand(C6, S8);
+        p3.setHand(C6, S8);
+        p1.setHand(C6, S8);
+        table.setBoard(board);
+        int pot = 10;
+        table.setPot(pot);
+        p1.setHandRank(HandRanker.HandRank.TwoPair);
+        p2.setHandRank(HandRanker.HandRank.TwoPair);
+        p3.setHandRank(HandRanker.HandRank.TwoPair);
+        comparer = new HandComparer(table);
+        ArrayList<Player> result = comparer.findWinner();
+        assertTrue(result.size() == 3);
+        ArrayList<String> names = new ArrayList<>(List.of(result.get(0).getName(), result.get(1).getName(), result.get(2).getName()));
+        assertTrue(names.contains("P1"));
+        assertTrue(names.contains("P2"));
+        assertTrue(names.contains("P3"));
+        assertTrue(result.get(0).getMoney() == 103);
+        assertTrue(result.get(1).getMoney() == 103);
+        assertTrue(result.get(2).getMoney() == 103);
+    }
+    //TODO add tests to compare players with same hands but one distinct winner, do this with three players
 }

@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -5,31 +6,78 @@ public class HandComparer {
     private Card[] board;
     private int pot;
     private ArrayList<Player> players;
-    private ArrayList<SidePot> sidePots;
     public HandComparer(Table table){
         board = table.getBoard();
         pot = table.getPot();
         players = table.getPlayers();
-        sidePots = table.getSidePots();
     }
-    /**
-     finds player with the highest hand strength
-     *compares hands with equal hand strength
-     *update player money
-     * @return
-     */
-    public void findWinner(){
+    public HandComparer(Card[] board, SidePot sidePot){
+        this.board = board;
+        pot = sidePot.getPot();
+        players = sidePot.getPlayers();
+    }
 
-    }
     /**
-     * compare hands of equal rank
-     * return 1, 2, or 0 if tie
-     * @param p1 player 1
-     * @param p2 player 2
-     * @param rank hand rank
-     * @return
+     * Finds winning player(s) and sets money field to old value plus pot value
+     * @return Arraylist of winning player(s)
      */
-    public int compareHand(Player p1, Player p2, HandRanker.HandRank rank){
+    public ArrayList<Player> findWinner(){
+        ArrayList<Player> tiedPlayers = new ArrayList<>();
+        ArrayList<Player> eligiblePlayers = new ArrayList<>((players.stream().filter(x -> !x.isFolded() && !x.isBankrupt()).collect(Collectors.toList())));
+
+        Player winner = eligiblePlayers.get(0);
+        tiedPlayers.add(winner);
+        //find player(s) with highest hand rank
+        for(int i = 1; i < eligiblePlayers.size(); i++){
+            int compare = winner.getHandRank().value - eligiblePlayers.get(i).getHandRank().value;
+            //new winner
+            if(compare < 0){
+                winner = eligiblePlayers.get(i);
+                tiedPlayers.clear();
+                tiedPlayers.add(winner);
+            }else if(compare == 0){//Tie
+                tiedPlayers.add(eligiblePlayers.get(i));
+            }
+        }
+        //find winner(s) from players with same hand rank and update player money
+        if(tiedPlayers.size() > 1){
+            ArrayList<Player> winners = new ArrayList<>();
+            winner = tiedPlayers.get(0);
+            winners.add(winner);
+            for(int i = 1; i < tiedPlayers.size(); i++){
+                switch (compareHand(winner, tiedPlayers.get(i))){
+                    case 0://tie
+                        winners.add(tiedPlayers.get(i));
+                        break;
+                    case 1://current winner
+                        break;
+                    case 2://new winner
+                        winner = tiedPlayers.get(i);
+                        winners.clear();
+                        winners.add(winner);
+                        break;
+                }
+            }
+            if(winners.size() > 1)
+                payWinner(pot, winners);
+            else
+                payWinner(pot, winner);
+            return winners;
+        }
+        payWinner(pot, winner);
+        return new ArrayList<>(List.of(winner));
+    }
+    private void payWinner(int pot, ArrayList<Player> winners){
+        int splitPot = pot / winners.size();
+        for(Player player : winners){
+            payWinner(splitPot, player);
+        }
+    }
+    private void payWinner(int pot, Player winner){
+        winner.setMoney(winner.getMoney() + pot);
+    }
+    private int compareHand(Player p1, Player p2){
+        HandRanker.HandRank rank = p1.getHandRank();
         int winner = 0;
         switch (rank){
             case StraightFlush:
@@ -60,42 +108,42 @@ public class HandComparer {
         return winner;
     }
 
-    public int compareHighCard(Player p1, Player p2){
+    private int compareHighCard(Player p1, Player p2){
         int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.HighCard);
         int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.HighCard);
         return compareValues(p1Cards, p2Cards, 0);
     }
-    public int compareStraight(Player p1, Player p2){
+    private int compareStraight(Player p1, Player p2){
         int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.Straight);
         int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.Straight);
         return compareTopCard(p1Cards[4], p2Cards[4]);
     }
-    public int compareFourPair(Player p1, Player p2){
+    private int compareFourPair(Player p1, Player p2){
         int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.FourPair);
         int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.FourPair);
         return compareTopCard(p1Cards[4], p2Cards[4]);
     }
-    public int compareThreePair(Player p1, Player p2){
+    private int compareThreePair(Player p1, Player p2){
         int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.ThreePair);
         int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.ThreePair);
         return compareValues(p1Cards, p2Cards, 3);
     }
-    public int comparePair(Player p1, Player p2){
+    private int comparePair(Player p1, Player p2){
         int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.Pair);
         int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.Pair);
         return compareValues(p1Cards, p2Cards, 2);
     }
-    public int compareTwoPair(Player p1, Player p2){
+    private int compareTwoPair(Player p1, Player p2){
         int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.TwoPair);
         int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.TwoPair);
         return compareValues(p1Cards, p2Cards, 0);
     }
-    public int compareFlush(Player p1, Player p2){
+    private int compareFlush(Player p1, Player p2){
         int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.Flush);
         int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.Flush);
         return compareValues(p1Cards, p2Cards, 0);
     }
-    public int compareFullHouse(Player p1, Player p2){
+    private int compareFullHouse(Player p1, Player p2){
         int[] p1Cards = getTopCards(p1.getCard1(), p1.getCard2(), HandRanker.HandRank.FullHouse);
         int[] p2Cards = getTopCards(p2.getCard1(), p2.getCard2(), HandRanker.HandRank.FullHouse);
         int threeCardWinner = compareTopCard(p1Cards[0], p2Cards[0]);
