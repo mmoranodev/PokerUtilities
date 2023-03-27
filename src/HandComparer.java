@@ -60,6 +60,8 @@ public class HandComparer {
             }
             if(winners.size() > 1)
                 payWinner(pot, winners);
+            else
+                payWinner(pot, winner);
             return winners;
         }
         payWinner(pot, winner);
