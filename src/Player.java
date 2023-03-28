@@ -1,7 +1,7 @@
 public class Player {
     private Card card1, card2;
     private int money, bet;
-    private boolean isAllIn, isFolded, inSidePot,isBankrupt;
+    private boolean isAllIn, hasFolded, inSidePot, isBankrupt;
     private String name;
     private HandRanker.HandRank handRank;
 
@@ -78,15 +78,15 @@ public class Player {
         isAllIn = allIn;
     }
 
-    public boolean isFolded() {
-        return isFolded;
+    public boolean hasFolded() {
+        return hasFolded;
     }
 
-    public void setFolded(boolean folded) {
-        this.isFolded = folded;
+    public void setFolded(boolean hasFolded) {
+        this.hasFolded = hasFolded;
     }
 
-    public boolean isInSidePot() {
+    public boolean inSidePot() {
         return inSidePot;
     }
 
