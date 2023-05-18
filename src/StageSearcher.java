@@ -2,32 +2,42 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StageSearcher {
-    protected Card[] board;
-    protected int[] cardValues;
-    protected Card.Suit[] cardSuits;
-    protected Card card1, card2;
-    protected Player player;
+    private Card[] board;
+    private int[] cardValues;
+    private Card.Suit[] cardSuits;
+    private Card card1, card2;
+    private Player player;
     private BoardSearcher boardSearcher;
+    private int boardLength;
     private boolean aceHigh;
     public void setPlayer(Player player){
         this.player = player;
         card1 = player.getCard1();
         card2 = player.getCard2();
+        if(board[3] == null)
+            boardLength = 3;
+        else if(board[4] == null)
+            boardLength = 4;
+        else
+            boardLength = 5;
     }
 
     public StageSearcher(Card[] board, Player player){
         this.board = board;
-        this.card1 = player.getCard1();
-        this.card2 = player.getCard2();
-        cardSuits = new Card.Suit[board.length];
-        cardValues = new int[board.length];
-        for(int i = 0; i < board.length; i++){
+        setPlayer(player);
+        cardSuits = new Card.Suit[boardLength + 2];
+        cardValues = new int[boardLength + 2];
+        for(int i = 0; i < boardLength; i++){
             cardSuits[i] = board[i].getSuit();
             cardValues[i] = board[i].getValue();
         }
+        cardValues[boardLength] = card1.getValue();
+        cardValues[boardLength + 1] = card2.getValue();
+        cardSuits[boardLength] = card1.getSuit();
+        cardSuits[boardLength + 1] = card2.getSuit();
         boardSearcher = new BoardSearcher(board);
     }
-    protected boolean hasPair(int num){
+    public boolean hasPair(int num){
         int count1 = 1, count2 = 1;
         if(hasPocketPair()){
             if(num == 2)
@@ -37,7 +47,7 @@ public class StageSearcher {
         }
         if(boardHasPair(num))
             return true;
-        for(int i = 0; i < board.length; i++) {
+        for(int i = 0; i < boardLength; i++) {
             if (cardValues[i] == card1.getValue())
                 count1++;
             else if(cardValues[i] == card2.getValue())
@@ -47,12 +57,12 @@ public class StageSearcher {
         }
         return false;
     }
-    protected boolean hasTwoPair(){
+    public boolean hasTwoPair(){
         int count1 = 1, count2 = 1;
         boolean boardPairPresent = boardSearcher.pairPresent();
         if((hasPocketPair() && boardPairPresent) || boardSearcher.twoPairPresent())
             return true;
-        for(int i = 0; i < board.length; i++) {
+        for(int i = 0; i < boardLength; i++) {
             if (cardValues[i] == card1.getValue())
                 count1++;
             else if(cardValues[i] == card2.getValue())
@@ -65,14 +75,21 @@ public class StageSearcher {
         return false;
     }
 
-    protected boolean hasStraight(){
+    public boolean hasStraight(){
+        if(board[4] != null && boardSearcher.straightPresent())
+            return true;
         Arrays.sort(cardValues);
-        int low = cardValues[0], high = cardValues[0], count = 1;
-        for(int i = 0; i < cardValues.length - 1; i++){
+        for(int i = boardLength - 1; i >= 0; i--){
 
         }
         return false;
     }
+    //hasStraight
+    //hasFlush
+    //hasFullHouse
+    //hasRoyalFlush?
+    //isSequence
+
 
 
     private boolean isSequence(int[] values){
@@ -88,12 +105,6 @@ public class StageSearcher {
             aceHigh = true;
         return true;
     }
-    //hasStraight
-    //hasFlush
-    //hasFullHouse
-    //hasRoyalFlush?
-    //isSequence
-
     private boolean hasPocketPair(){
         return card1.getValue() == card2.getValue();
     }

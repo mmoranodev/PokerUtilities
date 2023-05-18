@@ -42,15 +42,23 @@ class StageSearcherTest {
     }
     @Test
     void hasPair_Flop(){
-        board = new Card[]{H2, C4, D5};
+        board = new Card[]{H2, C4, D5, null, null};
         player.setCard1(C2);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
         assertTrue(searcher.hasPair(2));
     }
     @Test
+    void hasPair_Flop_Board(){
+        board = new Card[]{H2, C4, D4, null, null};
+        player.setCard1(C6);
+        player.setCard2(C3);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasPair(2));
+    }
+    @Test
     void hasPair_Flop_False(){
-        board = new Card[]{H2, C4, D5};
+        board = new Card[]{H2, C4, D5, null, null};
         player.setCard1(C6);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
@@ -58,15 +66,23 @@ class StageSearcherTest {
     }
     @Test
     void hasPair_Turn(){
-        board = new Card[]{S9, H2, C4, D5};
+        board = new Card[]{S9, H2, C4, D5, null};
         player.setCard1(C2);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
         assertTrue(searcher.hasPair(2));
     }
     @Test
+    void hasPair_Turn_Board(){
+        board = new Card[]{H2, C4, D4, D8, null};
+        player.setCard1(C6);
+        player.setCard2(C3);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasPair(2));
+    }
+    @Test
     void hasPair_Turn_False(){
-        board = new Card[]{S9, H2, C4, D5};
+        board = new Card[]{S9, H2, C4, D5, null};
         player.setCard1(C6);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
@@ -88,10 +104,18 @@ class StageSearcherTest {
         searcher = new StageSearcher(board, player);
         assertFalse(searcher.hasPair(2));
     }
+    @Test
+    void hasPair_River_Board(){
+        board = new Card[]{H2, C4, D4, S7, H9};
+        player.setCard1(C6);
+        player.setCard2(C3);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasPair(2));
+    }
     ///////////////
     @Test
     void hasThreePair_Flop(){
-        board = new Card[]{H2, C4, D5};
+        board = new Card[]{H2, C4, D5, null, null};
         player.setCard1(C2);
         player.setCard2(H2);
         searcher = new StageSearcher(board, player);
@@ -99,7 +123,7 @@ class StageSearcherTest {
     }
     @Test
     void hasThreePair_Flop_False(){
-        board = new Card[]{H6, C4, D5};
+        board = new Card[]{H6, C4, D5, null, null};
         player.setCard1(C6);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
@@ -107,7 +131,7 @@ class StageSearcherTest {
     }
     @Test
     void hasThreePair_Turn(){
-        board = new Card[]{S9, H2, C2, D2};
+        board = new Card[]{S9, H2, C2, D2, null};
         player.setCard1(C5);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
@@ -115,7 +139,7 @@ class StageSearcherTest {
     }
     @Test
     void hasThreePair_Turn_False(){
-        board = new Card[]{S9, H2, C3, D5};
+        board = new Card[]{S9, H2, C3, D5, null};
         player.setCard1(C6);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
@@ -140,7 +164,7 @@ class StageSearcherTest {
     ///////////////
     @Test
     void hasFourPair_Flop(){
-        board = new Card[]{H2, C4, D2};
+        board = new Card[]{H2, C4, D2, null, null};
         player.setCard1(C2);
         player.setCard2(H2);
         searcher = new StageSearcher(board, player);
@@ -148,7 +172,7 @@ class StageSearcherTest {
     }
     @Test
     void hasFourPair_Flop_False(){
-        board = new Card[]{H6, C4, D6};
+        board = new Card[]{H6, C4, D6, null, null};
         player.setCard1(C6);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
@@ -156,7 +180,7 @@ class StageSearcherTest {
     }
     @Test
     void hasFourPair_Turn(){
-        board = new Card[]{S2, H2, C2, D2};
+        board = new Card[]{S2, H2, C2, D2, null};
         player.setCard1(C5);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
@@ -164,7 +188,7 @@ class StageSearcherTest {
     }
     @Test
     void hasFourPair_Turn_False(){
-        board = new Card[]{S9, H3, C3, D5};
+        board = new Card[]{S9, H3, C3, D5, null};
         player.setCard1(C6);
         player.setCard2(C3);
         searcher = new StageSearcher(board, player);
@@ -189,7 +213,7 @@ class StageSearcherTest {
     ///////////////
     @Test
     void hasTwoPair_Flop(){
-        board = new Card[]{DJ, S9, H2};
+        board = new Card[]{DJ, S9, H2, null, null};
         player.setCard1(C9);
         player.setCard2(CJ);
         searcher = new StageSearcher(board, player);
@@ -197,7 +221,7 @@ class StageSearcherTest {
     }
     @Test
     void hasTwoPair_Flop_False(){
-        board = new Card[]{DJ, S9, H2};
+        board = new Card[]{DJ, S9, H2, null, null};
         player.setCard1(C3);
         player.setCard2(CJ);
         searcher = new StageSearcher(board, player);
@@ -205,7 +229,7 @@ class StageSearcherTest {
     }
     @Test
     void hasTwoPair_Turn(){
-        board = new Card[]{DJ, S9, H2, H9};
+        board = new Card[]{DJ, S9, H2, H9, null};
         player.setCard1(C3);
         player.setCard2(CJ);
         searcher = new StageSearcher(board, player);
@@ -213,7 +237,7 @@ class StageSearcherTest {
     }
     @Test
     void hasTwoPair_Turn_False(){
-        board = new Card[]{DJ, S9, H2, H9};
+        board = new Card[]{DJ, S9, H2, H9, null};
         player.setCard1(C3);
         player.setCard2(C5);
         searcher = new StageSearcher(board, player);
@@ -235,5 +259,6 @@ class StageSearcherTest {
         searcher = new StageSearcher(board, player);
         assertFalse(searcher.hasTwoPair());
     }
+    //////////////
 
 }

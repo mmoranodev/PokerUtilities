@@ -803,5 +803,4 @@ class HandComparerTest {
         assertTrue(result.get(1).getMoney() == 103);
         assertTrue(result.get(2).getMoney() == 103);
     }
-    //TODO add tests to compare players with same hands but one distinct winner, do this with three players
 }
