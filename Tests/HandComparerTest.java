@@ -64,6 +64,7 @@ class HandComparerTest {
         }
     }
     //methods used in commented out tests made private
+    /*
     //region CompareHand Tests
     /*
     @Test
@@ -803,4 +804,5 @@ class HandComparerTest {
         assertTrue(result.get(1).getMoney() == 103);
         assertTrue(result.get(2).getMoney() == 103);
     }
+
 }

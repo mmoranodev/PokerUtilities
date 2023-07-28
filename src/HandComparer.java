@@ -78,7 +78,7 @@ public class HandComparer {
     }
     private int compareHand(Player p1, Player p2){
         HandRanker.HandRank rank = p1.getHandRank();
-        int winner = 0;
+        int winner;
         switch (rank){
             case StraightFlush:
             case Straight:

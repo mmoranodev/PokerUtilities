@@ -9,6 +9,7 @@ public class HandRanker {
         card1 = c1;
         card2 = c2;
     }
+    public HandRanker(){}
     public HandRanker(Card[] board, Card card1, Card card2){
         this.board = board;
         this.card1 = card1;
@@ -53,7 +54,7 @@ public class HandRanker {
         return HandRank.HighCard;
     }
 
-    public boolean hasPair(){
+    private boolean hasPair(){
         if(hasPocketPair())
             return true;
         if(boardSearcher.pairPresent())
@@ -64,7 +65,7 @@ public class HandRanker {
         }
         return false;
     }
-    public boolean hasTwoPair(){
+    private boolean hasTwoPair(){
         if(boardSearcher.twoPairPresent())
             return true;
         Card firstPair = boardSearcher.getBoardPair();
@@ -90,7 +91,7 @@ public class HandRanker {
         }
         return false;
     }
-    public boolean hasThreePair(){
+    private boolean hasThreePair(){
         if(boardSearcher.threePairPresent())
             return true;
         if(hasPocketPair())
@@ -108,7 +109,7 @@ public class HandRanker {
         }
         return card1Count == 3 || card2Count == 3;
     }
-    public boolean hasFourPair(){
+    private boolean hasFourPair(){
         if(boardSearcher.fourPairPresent())
             return true;
         if(hasPocketPair())
@@ -129,7 +130,7 @@ public class HandRanker {
         }
         return card1Count == 4 || card2Count == 4;
     }
-    public boolean hasStraight() {
+    private boolean hasStraight() {
         if (boardSearcher.straightPresent())
             return true;
         //sort board values
@@ -166,7 +167,7 @@ public class HandRanker {
         }
         return false;
     }
-    public boolean hasFlush(){
+    private boolean hasFlush(){
         if(boardSearcher.flushPresent())
             return true;
         if(card1.getSuit().equals(card2.getSuit())) {
@@ -194,7 +195,7 @@ public class HandRanker {
         }
         return false;
     }
-    public boolean hasFullHouse(){
+    private boolean hasFullHouse(){
         if(boardSearcher.fullHousePresent())
             return true;
         if(hasPocketPair()) {
@@ -236,7 +237,7 @@ public class HandRanker {
         }
         return false;
     }
-    public boolean hasStraightFlush(){
+    private boolean hasStraightFlush(){
         if(boardSearcher.straightFlushPresent())
             return true;
         ArrayList<Card> allCards = new ArrayList<>();
@@ -313,7 +314,7 @@ public class HandRanker {
         }
         return true;
     }
-    private ArrayList<Card> getStraightCards(ArrayList<Card> allCards){
+    public ArrayList<Card> getStraightCards(ArrayList<Card> allCards){
         ArrayList<Card> result = new ArrayList<>();
         int low = allCards.get(0).getValue(), high = low, pos = 0;
         int currentValue = allCards.get(0).getValue();
@@ -325,8 +326,8 @@ public class HandRanker {
                 currentValue = currentCard.getValue();
                 high = currentValue;
             }
-            else if(low == Card.Rank.Two.value && high == Card.Rank.Five.value && allCards.get(6).getRank() == Card.Rank.Ace)
-                result.add(allCards.get(6));
+            else if(low == Card.Rank.Two.value && high == Card.Rank.Five.value && allCards.get(allCards.size() - 1).getRank() == Card.Rank.Ace)
+                result.add(allCards.get(allCards.size() - 1));
             else if(result.size() >=5)
                 continue;
             else{

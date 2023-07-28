@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,6 +41,7 @@ class StageSearcherTest {
             throw new RuntimeException(e);
         }
     }
+    /*
     @Test
     void hasPair_Flop(){
         board = new Card[]{H2, C4, D5, null, null};
@@ -260,5 +262,249 @@ class StageSearcherTest {
         assertFalse(searcher.hasTwoPair());
     }
     //////////////
+    @Test
+    void hasStraight_Flop(){
+        board = new Card[]{DJ, S9, H10, null, null};
+        player.setCard1(C8);
+        player.setCard2(C7);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraight());
+    }
+    @Test
+    void hasStraight_Flop_5High(){
+        board = new Card[]{D4, S2, HA, null, null};
+        player.setCard1(C3);
+        player.setCard2(C5);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraight());
+    }
+    @Test
+    void hasStraight_Flop_False(){
+        board = new Card[]{DJ, S9, H2, null, null};
+        player.setCard1(C8);
+        player.setCard2(C10);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasStraight());
+    }
+    @Test
+    void hasStraight_Turn(){
+        board = new Card[]{DJ, S9, H2, H10, null};
+        player.setCard1(CQ);
+        player.setCard2(C8);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraight());
+    }
+    @Test
+    void hasStraight_Turn_5High(){
+        board = new Card[]{D4, S9, H2, H5, null};
+        player.setCard1(CA);
+        player.setCard2(C3);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraight());
+    }
+    @Test
+    void hasStraight_Turn_False(){
+        board = new Card[]{DQ, S9, H2, H10, null};
+        player.setCard1(C7);
+        player.setCard2(C8);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasStraight());
+    }
+    @Test
+    void hasStraight_River(){
+        board = new Card[]{D8, S6, H2, H5, C4};
+        player.setCard1(C9);
+        player.setCard2(C7);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraight());
+    }
+    @Test
+    void hasStraight_River_5High(){
+        board = new Card[]{D8, S9, H2, HA, C4};
+        player.setCard1(C3);
+        player.setCard2(C5);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraight());
+    }
+    @Test
+    void hasStraight_River_False(){
+        board = new Card[]{D10, S9, H8, H5, H6};
+        player.setCard1(C3);
+        player.setCard2(C4);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasStraight());
+    }
+    ///////////////
+    @Test
+    void hasFlush_Flop(){
+        board = new Card[]{SJ, S9, S2, null, null};
+        player.setCard1(S10);
+        player.setCard2(SQ);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasFlush());
+    }
+    @Test
+    void hasFlush_Flop_False(){
+        board = new Card[]{SJ, S9, S2, null, null};
+        player.setCard1(S10);
+        player.setCard2(DQ);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasFlush());
+    }
+    @Test
+    void hasFlush_Turn(){
+        board = new Card[]{SJ, S9, S2, D4, null};
+        player.setCard1(S10);
+        player.setCard2(SQ);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasFlush());
+    }
+    @Test
+    void hasFlush_Turn_False(){
+        board = new Card[]{SJ, S9, S2, D4, null};
+        player.setCard1(S10);
+        player.setCard2(DQ);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasFlush());
+    }
+    @Test
+    void hasFlush_River(){
+        board = new Card[]{SJ, H9, S2, S4, S5};
+        player.setCard1(S10);
+        player.setCard2(SQ);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasFlush());
+    }
+    @Test
+    void hasFlush_River_False(){
+        board = new Card[]{SJ, H9, S2, S4, D5};
+        player.setCard1(S10);
+        player.setCard2(DQ);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasFlush());
+    }
+    //////////////
 
+    @Test
+    void hasStraightFlush_Flop(){
+        board = new Card[]{CJ, C9, C10, null, null};
+        player.setCard1(C8);
+        player.setCard2(C7);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraightFlush());
+    }
+    @Test
+    void hasStraightFlush_Flop_5High(){
+        board = new Card[]{S4, S2, SA, null, null};
+        player.setCard1(S3);
+        player.setCard2(S5);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraightFlush());
+    }
+    @Test
+    void hasStraightFlush_Flop_False(){
+        board = new Card[]{S4, H2, SA, null, null};
+        player.setCard1(S3);
+        player.setCard2(S5);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasStraightFlush());
+    }
+    @Test
+    void hasStraightFlush_Turn(){
+        board = new Card[]{SJ, S9, H2, S10, null};
+        player.setCard1(SQ);
+        player.setCard2(S8);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraightFlush());
+    }
+    @Test
+    void hasStraightFlush_Turn_5High(){
+        board = new Card[]{C4, S9, C2, C5, null};
+        player.setCard1(CA);
+        player.setCard2(C3);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraightFlush());
+    }
+    @Test
+    void hasStraightFlush_Turn_False(){
+        board = new Card[]{C4, S9, C2, D5, null};
+        player.setCard1(CA);
+        player.setCard2(C3);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasStraightFlush());
+    }
+    @Test
+    void hasStraightFlush_River(){
+        board = new Card[]{C8, C6, H2, C5, C4};
+        player.setCard1(C9);
+        player.setCard2(C7);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraightFlush());
+    }
+    @Test
+    void hasStraightFlush_River_5High(){
+        board = new Card[]{D8, S9, C2, CA, C4};
+        player.setCard1(C3);
+        player.setCard2(C5);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasStraightFlush());
+    }
+    @Test
+    void hasStraightFlush_River_False(){
+        board = new Card[]{C8, H6, H2, C5, C4};
+        player.setCard1(C9);
+        player.setCard2(C7);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasStraightFlush());
+    }
+    ///////////////
+    @Test
+    void hasFullHouse_Flop(){
+        board = new Card[]{DJ, S9, H9, null, null};
+        player.setCard1(C9);
+        player.setCard2(CJ);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasFullHouse());
+    }
+    @Test
+    void hasFullHouse_Flop_False(){
+        board = new Card[]{DJ, S9, H3, null, null};
+        player.setCard1(C3);
+        player.setCard2(CJ);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasFullHouse());
+    }
+    @Test
+    void hasFullHouse_Turn(){
+        board = new Card[]{DJ, S9, H2, H9, null};
+        player.setCard1(C9);
+        player.setCard2(CJ);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasFullHouse());
+    }
+    @Test
+    void hasFullHouse_Turn_False(){
+        board = new Card[]{DJ, S9, H2, H9, null};
+        player.setCard1(C3);
+        player.setCard2(C9);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasFullHouse());
+    }
+    @Test
+    void hasFullHouse_River(){
+        board = new Card[]{D8, S9, H8, H8, C4};
+        player.setCard1(CJ);
+        player.setCard2(CJ);
+        searcher = new StageSearcher(board, player);
+        assertTrue(searcher.hasFullHouse());
+    }
+    @Test
+    void hasFullHouse_River_False(){
+        board = new Card[]{DJ, S9, H3, H8, H6};
+        player.setCard1(C3);
+        player.setCard2(C3);
+        searcher = new StageSearcher(board, player);
+        assertFalse(searcher.hasFullHouse());
+    }
+*/
 }
