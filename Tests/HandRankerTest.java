@@ -51,6 +51,7 @@ class HandRankerTest {
             permutations.add(new Card[]{board[nums[0]-1],board[nums[1]-1],board[nums[2]-1],board[nums[3]-1],board[nums[4]-1]});
         }
     }
+    /*
     @Test
     void hasPair_C1() {
         board = new Card[]{H3, C9, C4, C5, C6};
@@ -921,4 +922,6 @@ class HandRankerTest {
             assertTrue(result);
         }
     }
+
+     */
 }

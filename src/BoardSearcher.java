@@ -2,16 +2,23 @@ import java.util.Arrays;
 
 public class BoardSearcher {
     private Card[] board;
+    private int boardLength;
     private boolean aceHigh;
     public BoardSearcher(Card[] board){
         this.board = board;
+        if(board[3] == null)
+            boardLength = 3;
+        else if(board[4] == null)
+            boardLength = 4;
+        else
+            boardLength = 5;
     }
 
     public boolean pairPresent(){
         Card checkCard;
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < boardLength; i++){
             checkCard = board[i];
-            for(int k = 0; k < 5; k++){
+            for(int k = 0; k < boardLength; k++){
                 if(!checkCard.equals(board[k]) && checkCard.getValue() == board[k].getValue())
                     return true;
             }
@@ -20,9 +27,9 @@ public class BoardSearcher {
     }
     public Card getBoardPair(){
         Card checkCard;
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < boardLength; i++){
             checkCard = board[i];
-            for(int k = 0; k < 5; k++){
+            for(int k = 0; k < boardLength; k++){
                 if(!checkCard.equals(board[k]) && checkCard.getValue() == board[k].getValue())
                     return checkCard;
             }
@@ -33,8 +40,8 @@ public class BoardSearcher {
         Card checkCard;
         Card.Rank firstPair = null;
         int count = 1, pairCount = 0;
-        for (int i = 1; i < 5; i++){
-            for(int k = 1; k < 5; k++){
+        for (int i = 1; i < boardLength; i++){
+            for(int k = 1; k < boardLength; k++){
                 checkCard = board[count - 1];
                 if(!checkCard.equals(board[k]) && checkCard.getValue() == board[k].getValue() &&
                         board[k].getRank() != firstPair) {
@@ -51,8 +58,8 @@ public class BoardSearcher {
     public boolean threePairPresent(){
         Card checkCard = board[0];
         int cardCount = 1;
-        for(int i = 0; i < 5; i++){
-            for(int k = 0; k < 5; k++){
+        for(int i = 0; i < boardLength; i++){
+            for(int k = 0; k < boardLength; k++){
                 if(!checkCard.equals(board[i]) &&
                         checkCard.getValue() == board[k].getValue())
                     cardCount++;
@@ -67,8 +74,8 @@ public class BoardSearcher {
     public boolean fourPairPresent(){
         Card checkCard = board[0];
         int cardCount = 1;
-        for(int i = 0; i < 5; i++){
-            for(int k = 0; k < 5; k++){
+        for(int i = 0; i < boardLength; i++){
+            for(int k = 0; k < boardLength; k++){
                 if(!checkCard.equals(board[i]) &&
                         checkCard.getValue() == board[k].getValue())
                     cardCount++;

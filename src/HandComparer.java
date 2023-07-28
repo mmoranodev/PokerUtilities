@@ -23,7 +23,7 @@ public class HandComparer {
      */
     public ArrayList<Player> findWinner(){
         ArrayList<Player> tiedPlayers = new ArrayList<>();
-        ArrayList<Player> eligiblePlayers = new ArrayList<>((players.stream().filter(x -> !x.isFolded() && !x.isBankrupt()).collect(Collectors.toList())));
+        ArrayList<Player> eligiblePlayers = new ArrayList<>((players.stream().filter(x -> !x.hasFolded() && !x.isBankrupt()).collect(Collectors.toList())));
 
         Player winner = eligiblePlayers.get(0);
         tiedPlayers.add(winner);
@@ -78,7 +78,7 @@ public class HandComparer {
     }
     private int compareHand(Player p1, Player p2){
         HandRanker.HandRank rank = p1.getHandRank();
-        int winner = 0;
+        int winner;
         switch (rank){
             case StraightFlush:
             case Straight:
