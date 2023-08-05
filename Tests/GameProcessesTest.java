@@ -51,7 +51,7 @@ class GameProcessesTest {
     }
     //region Side Pot Tests
     @Test
-    void singleSidePot(){
+    void singleSidePot() {
         p1.setMoney(50);
         p1.setBet(50);
         p1.setAllIn(true);
@@ -66,6 +66,28 @@ class GameProcessesTest {
         assertTrue(p1.getMoney() == 0);
         assertTrue(p2.getMoney() == 50 && p2.getBet() == 30);
         assertTrue(p3.getMoney() == 50 && p3.getBet() == 30);
+        assertTrue(p4.getMoney() == 100);
+    }
+    @Test
+    void twoSidePots(){
+        p1.setMoney(50);
+        p1.setBet(50);
+        p1.setAllIn(true);
+        p2.setMoney(80);
+        p2.setBet(80);
+        p2.setAllIn(true);
+        p3.setBet(90);
+        p4.setBet(0);
+        p4.setFolded(true);
+        ArrayList<SidePot> results = GameProcesses.createSidePots(table);
+        assertTrue(results.size() == 2);
+        assertTrue(results.get(0).getPlayers().size() == 3);
+        assertTrue(results.get(0).getPot() == 150);
+        assertTrue(results.get(1).getPlayers().size() == 2);
+        assertTrue(results.get(1).getPot() == 60);
+        assertTrue(p1.getMoney() == 0);
+        assertTrue(p2.getMoney() == 0 && p2.getBet() == 0);
+        assertTrue(p3.getMoney() == 20 && p3.getBet() == 10);
         assertTrue(p4.getMoney() == 100);
 
     }

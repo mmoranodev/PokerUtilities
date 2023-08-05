@@ -33,6 +33,10 @@ public class HandRanker {
         }
     }
 
+    /**
+     * Ranks player hand
+     * @return Player HandRank
+     */
     public HandRank rankHand()
     {
         if(hasStraightFlush())

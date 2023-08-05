@@ -1,0 +1,10 @@
+Classes to Write
+    Move
+        determines opponent move
+        method(s) to determine probability of check/call/raise/fold
+    StageSearcher
+        store card(s) of pairs, possibly other ranks tbd
+    --SidePot
+    --    create sidepot
+    Save
+        save game state

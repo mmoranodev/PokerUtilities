@@ -18,7 +18,7 @@ public class HandComparer {
     }
 
     /**
-     * Finds winning player(s) and sets money field to old value plus pot value
+     * Finds winning player(s) and updates winner(s) money.
      * @return Arraylist of winning player(s)
      */
     public ArrayList<Player> findWinner(){

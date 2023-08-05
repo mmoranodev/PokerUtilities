@@ -41,6 +41,47 @@ class StageSearcherTest {
             throw new RuntimeException(e);
         }
     }
+    @Test
+    void cardCount(){
+        board = new Card[]{H2, H3, H4, C9, C10};
+        player.setCard1(HA);
+        player.setCard2(CJ);
+        searcher = new StageSearcher(board, player);
+        searcher.getCurrentHandRank();
+        assertTrue(searcher.getFlushCardCount() == 4);
+        assertTrue(searcher.getStraightCardCount() == 4);
+    }
+    @Test
+    void cardCount2(){
+        board = new Card[]{C5, H3, H4, C9, C10};
+        player.setCard1(HA);
+        player.setCard2(CJ);
+        searcher = new StageSearcher(board, player);
+        searcher.getCurrentHandRank();
+        assertTrue(searcher.getFlushCardCount() == 4);
+        assertTrue(searcher.getStraightCardCount() == 3);
+    }
+    @Test
+    void cardCount3(){
+        board = new Card[]{C5, H3, D4, null, null};
+        player.setCard1(HA);
+        player.setCard2(SJ);
+        searcher = new StageSearcher(board, player);
+        searcher.getCurrentHandRank();
+        assertTrue(searcher.getFlushCardCount() == 2);
+        assertTrue(searcher.getStraightCardCount() == 3);
+    }
+    @Test
+    void setNewPlayer(){
+        board = new Card[]{C2, C3, C4, C5, C6};
+        player.setCard1(C7);
+        player.setCard2(C8);
+        Player p2 = new Player("");
+        p2.setCard1(C9);
+        p2.setCard2(C10);
+        searcher = new StageSearcher(board, player);
+        searcher.setPlayer(p2);
+    }
     /*
     @Test
     void hasPair_Flop(){

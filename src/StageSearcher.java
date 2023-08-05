@@ -8,26 +8,36 @@ public class StageSearcher {
     private ArrayList<Card> allCards;
     private Card.Suit[] cardSuits;
     private Card card1, card2;
-    private Player player;
     private BoardSearcher boardSearcher;
     private HandRanker handRanker;
     private int boardLength;
     private boolean aceHigh;
+    private int straightCardCount;
+    private int flushCardCount;
+    private int pair1Value;
+    private int pair2Value;
     public void setPlayer(Player player){
-        this.player = player;
         card1 = player.getCard1();
         card2 = player.getCard2();
+        straightCardCount = 0;
+        flushCardCount = 0;
+        pair1Value = -1;
+        pair2Value = -1;
+        if(allCards != null) {
+            allCards.set(allCards.size() - 1, card1);
+            allCards.set(allCards.size() - 2, card2);
+        }
+    }
+
+    public StageSearcher(Card[] board, Player player){
+        this.board = board;
+        setPlayer(player);
         if(board[3] == null)
             boardLength = 3;
         else if(board[4] == null)
             boardLength = 4;
         else
             boardLength = 5;
-    }
-
-    public StageSearcher(Card[] board, Player player){
-        this.board = board;
-        setPlayer(player);
         cardSuits = new Card.Suit[boardLength + 2];
         cardValues = new int[boardLength + 2];
         allCards = new ArrayList<>();
@@ -45,6 +55,11 @@ public class StageSearcher {
         boardSearcher = new BoardSearcher(board);
         handRanker = new HandRanker();
     }
+
+    /**
+     * Finds hands strength at each stage of a hand.
+     * @return Current HandRank at stage.
+     */
     public HandRanker.HandRank getCurrentHandRank(){
         if(hasStraightFlush())
             return aceHigh ? HandRanker.HandRank.RoyalFlush : HandRanker.HandRank.StraightFlush;
@@ -68,6 +83,7 @@ public class StageSearcher {
     private boolean hasPair(int num){
         int count1 = 1, count2 = 1;
         if(hasPocketPair()){
+            pair1Value = card1.getValue();
             if(num == 2)
                 return true;
             else
@@ -80,25 +96,34 @@ public class StageSearcher {
                 count1++;
             else if(cardValues[i] == card2.getValue())
                 count2++;
-            if(count1 == num || count2 == num)
+            if(count1 == num || count2 == num) {
+                pair1Value = count1 == num ? card1.getValue() : card2.getValue();
                 return true;
+            }
         }
         return false;
     }
     private boolean hasTwoPair(){
         int count1 = 1, count2 = 1;
         boolean boardPairPresent = boardSearcher.pairPresent();
-        if((hasPocketPair() && boardPairPresent) || boardSearcher.twoPairPresent())
+        if((hasPocketPair() && boardPairPresent) || boardSearcher.twoPairPresent()) {
+            pair1Value = card1.getValue();
             return true;
+        }
         for(int i = 0; i < boardLength; i++) {
             if (cardValues[i] == card1.getValue())
                 count1++;
             else if(cardValues[i] == card2.getValue())
                 count2++;
-            if(count1 == 2 && count2 == 2)
+            if(count1 == 2 && count2 == 2) {
+                pair1Value = card1.getValue();
+                pair2Value = card2.getValue();
                 return true;
-            else if(boardPairPresent && (count1 == 2 || count2 == 2))
+            }
+            else if(boardPairPresent && (count1 == 2 || count2 == 2)){
+                pair1Value = count1 == 2 ? card1.getValue() : card2.getValue();
                 return true;
+            }
         }
         return false;
     }
@@ -123,6 +148,7 @@ public class StageSearcher {
             else if(result.size() >=5)
                 continue;
             else{
+                setStraightCardCount(result.size(), low, cardValues[cardValues.length - 1]);
                 result.clear();
                 result.add(currentCard);
                 currentValue = currentCard;
@@ -131,6 +157,7 @@ public class StageSearcher {
             }
             pos++;
         }
+        setStraightCardCount(result.size(), low, cardValues[cardValues.length - 1]);
         return result.size() >= 5;
     }
     private boolean hasFlush(){
@@ -142,6 +169,7 @@ public class StageSearcher {
                 if(currentSuit == cardSuits[k])
                     count++;
             }
+            setFlushCardCount(count);
             if(count >= 5)
                 return true;
             count = 0;
@@ -260,19 +288,6 @@ public class StageSearcher {
         }
         return true;
     }
-    private boolean isSequence(int[] values){
-        Arrays.sort(values);
-        for(int i = 0; i < values.length - 1; i++){
-            if(values[i + 1] != values[i] + 1){
-                if(i == 3 && values[0] == 1 && values[4] == 13)
-                    continue;
-                return false;
-            }
-        }
-        if(values[4] == 13 && values[3] == 12)
-            aceHigh = true;
-        return true;
-    }
     private boolean hasPocketPair(){
         return card1.getValue() == card2.getValue();
     }
@@ -292,5 +307,32 @@ public class StageSearcher {
                 break;
         }
         return false;
+    }
+    public int getStraightCardCount(){
+        return straightCardCount;
+    }
+    public int getFlushCardCount(){
+        return flushCardCount;
+    }
+    private void setStraightCardCount(int num, int low, int high){
+        if (low == Card.Rank.Two.value && high == Card.Rank.Ace.value)
+            num++;
+        setStraightCardCount(num);
+    }
+    private void setStraightCardCount(int num){
+        if(num > straightCardCount)
+            straightCardCount = num;
+    }
+    private void setFlushCardCount(int num){
+        if(num > flushCardCount)
+            flushCardCount = num;
+    }
+
+    public int getPair1Value() {
+        return pair1Value;
+    }
+
+    public int getPair2Value() {
+        return pair2Value;
     }
 }
