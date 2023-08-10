@@ -1,4 +1,6 @@
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     private Card card1, card2;
     private int money, bet;
     private boolean isAllIn, hasFolded, inSidePot, isBankrupt;
